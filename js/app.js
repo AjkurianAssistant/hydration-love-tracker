@@ -50,7 +50,6 @@ class HydrationApp {
     bindElements() {
         this.elements = {
             progressFill: document.getElementById('progress-fill'),
-            remaining: document.getElementById('remaining'),
             shortMessage: document.getElementById('short-message'),
             btnSip: document.getElementById('btn-sip'),
             btnBottle: document.getElementById('btn-bottle'),
@@ -249,10 +248,6 @@ class HydrationApp {
             duration: 0.7,
             ease: "power2.out"
         });
-
-        // Update remaining text
-        const remainingBottles = Math.max(0, GOAL_BOTTLES - progress.totalBottles);
-        this.elements.remaining.textContent = `Goal: ${GOAL_BOTTLES} bottles | ${remainingBottles.toFixed(1)} bottles to go`;
 
         // Render history
         this.renderHistory();
