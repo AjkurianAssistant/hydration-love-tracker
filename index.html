@@ -23,12 +23,6 @@
                 <span class="btn-text">Sip</span>
                 <span class="btn-amount">+0.5 oz</span>
             </button>
-
-            <button class="drink-btn btn-bottle glass-card" id="btn-bottle">
-                <span class="btn-emoji">✅</span>
-                <span class="btn-text">Bottle Done</span>
-                <span class="btn-amount">+16.9 oz</span>
-            </button>
         </section>
 
         <section class="progress-section glass-card">
@@ -72,6 +66,25 @@
             <h2>This Week</h2>
             <canvas id="week-chart"></canvas>
         </section>
+
+        <div class="settings-section">
+            <button class="settings-btn" id="settings-btn">⚙️</button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content">
+            <h3>Settings</h3>
+            <p class="info-text">Hydration Love Tracker</p>
+            <p class="info-text">All data stored locally on this device</p>
+            <div class="modal-stats">
+                <p>Today's drinks: <span id="modal-drink-count">0</span></p>
+                <p>Current bottle: <span id="modal-bottle-info">1 of 5</span></p>
+            </div>
+            <button class="btn-reset" id="btn-reset">Reset All Data</button>
+            <button class="btn-close-modal" id="btn-close-modal">Close</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
