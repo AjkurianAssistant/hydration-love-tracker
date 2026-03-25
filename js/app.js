@@ -22,10 +22,12 @@ class HydrationApp {
         this.bindEvents();
         Storage.performDailyResetIfNeeded();
         this.loadBottleState();
-        this.refreshUI();
         this.initChart();
         this.checkDailyReset();
+        this.refreshUI();
         this.startBackgroundAnimation();
+        this.updateBottleVisual(); // Ensure bottle visual is set on load
+
         setInterval(() => Storage.performDailyResetIfNeeded(), 60 * 1000);
     }
 
@@ -260,7 +262,10 @@ class HydrationApp {
     }
 
     updateBottleVisual() {
-        if (!this.elements.waterLevel) return;
+        if (!this.elements.waterLevel) {
+            console.warn('waterLevel element not found');
+            return;
+        }
 
         // Update bottle label
         const displayBottleNum = this.currentBottleNumber > GOAL_BOTTLES ? GOAL_BOTTLES : this.currentBottleNumber;
@@ -270,21 +275,21 @@ class HydrationApp {
         const remainingOz = this.currentBottleProgress.toFixed(1);
         this.elements.ozLabel.textContent = `${remainingOz} oz remaining`;
 
-        // Get bottle body height for pixel calculation
-        const bottleBody = document.querySelector('.bottle-body');
-        const maxHeight = bottleBody ? bottleBody.offsetHeight : 160;
-        const newHeight = (this.currentBottleProgress / BOTTLE_OZ) * maxHeight;
+        // Calculate water level as percentage
+        const levelPercent = (this.currentBottleProgress / BOTTLE_OZ) * 100;
+        const clampedPercent = Math.min(Math.max(levelPercent, 0), 100);
 
-        // Animate water level draining (pixel-based for reliability)
+        console.log('Bottle visual:', { currentBottleProgress: this.currentBottleProgress, levelPercent: clampedPercent });
+
+        // Animate water level using percentage (work with CSS percentage height)
         gsap.to(this.elements.waterLevel, {
-            height: `${newHeight}px`,
+            height: `${clampedPercent}%`,
             duration: 0.5,
             ease: "power2.out"
         });
 
-        // Create bubble effect if water is moving (between 10% and 90%)
-        const levelPercent = (this.currentBottleProgress / BOTTLE_OZ) * 100;
-        if (levelPercent > 10 && levelPercent < 90) {
+        // Create bubble effect if water is moving (between 20% and 80%)
+        if (clampedPercent > 20 && clampedPercent < 80) {
             this.createBubbleEffect();
         }
     }

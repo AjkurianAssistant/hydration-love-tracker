@@ -350,13 +350,13 @@ header .subtitle {
     gap: 4px;
 }
 
-#current-bottle-label {
+#bottle-label {
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--light-turquoise);
 }
 
-#current-oz-label {
+#oz-label {
     font-size: 1rem;
     color: var(--text-muted);
     font-weight: 600;
