@@ -8,76 +8,97 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.css">
 </head>
 <body>
+    <div class="background-animation"></div>
+
     <div class="container">
         <header>
-            <h1>💧 Hydration Love</h1>
+            <h1>Hydration Love</h1>
             <p class="subtitle">For my love ❤️</p>
         </header>
 
-        <section class="progress-section">
-            <div class="progress-header">
-                <span id="current-bottles">0</span>/5 bottles
+        <section class="bottle-status">
+            <div class="bottle-indicator">
+                <span class="bottle-emoji">🥤</span>
+                <div class="bottle-info">
+                    <span id="bottle-count">Bottle 0 of 5</span>
+                    <span id="bottle-percentage" class="percentage">0%</span>
+                </div>
             </div>
+            <div class="remaining" id="remaining">Remaining: 5 bottles (84.5 oz)</div>
+        </section>
+
+        <section class="progress-section glass-card">
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
+                <div class="wave"></div>
             </div>
-            <p class="remaining" id="remaining">Remaining: 5 bottles</p>
+        </section>
+
+        <!-- Water Bottle Visualization -->
+        <section class="bottle-visual glass-card">
+            <div class="water-bottle" id="water-bottle">
+                <div class="bottle-cap"></div>
+                <div class="bottle-neck"></div>
+                <div class="bottle-body">
+                    <div class="water-level" id="water-level"></div>
+                    <div class="water-bubbles" id="water-bubbles"></div>
+                </div>
+                <div class="bottle-base"></div>
+            </div>
+            <div class="bottle-stats">
+                <span id="current-bottle-label">Bottle 1 of 5</span>
+                <span id="current-oz-label">0.0 / 16.9 oz</span>
+            </div>
         </section>
 
         <section class="message-section">
-            <div class="message-card" id="message-card">
+            <div class="short-message glass-card" id="message-card">
                 <p id="short-message">Take your first sip! 💕</p>
             </div>
-            <div class="daily-message" id="daily-message">
-                <p id="daily-text">Complete drinks to reveal today's message...</p>
-            </div>
-        </section>
-
-        <section class="upload-section">
-            <div class="upload-area" id="upload-area">
-                <input type="file" id="image-input" accept="image/*" capture="environment">
-                <div class="upload-content">
-                    <svg class="bottle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 8h1a4 4 0 1 1 0 8h-1"></path>
-                        <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"></path>
-                        <line x1="6" y1="1" x2="6" y2="4"></line>
-                        <line x1="10" y1="1" x2="10" y2="4"></line>
-                        <line x1="14" y1="1" x2="14" y2="4"></line>
-                    </svg>
-                    <p>Tap to upload bottle photo</p>
-                    <span class="hint">AI will estimate how much you drank</span>
+            <div class="daily-progress glass-card">
+                <div class="daily-header">
+                    <span>Daily Message</span>
+                    <span id="daily-progress-text">0/30 words</span>
                 </div>
-                <img id="preview" class="preview hidden">
+                <div class="daily-message" id="daily-message">
+                    <p id="daily-text">Complete drinks to reveal today's message...</p>
+                </div>
             </div>
-            <button class="btn-primary" id="submit-btn" disabled>Submit</button>
         </section>
 
-        <section class="history-section">
-            <h2>Today's Log</h2>
+        <section class="actions-section">
+            <button class="drink-btn btn-sip glass-card" id="btn-sip">
+                <span class="btn-emoji">💧</span>
+                <span class="btn-text">Sip</span>
+                <span class="btn-amount">+0.5 oz</span>
+            </button>
+
+            <button class="drink-btn btn-bottle glass-card" id="btn-bottle">
+                <span class="btn-emoji">✅</span>
+                <span class="btn-text">Bottle Done</span>
+                <span class="btn-amount">+16.9 oz</span>
+            </button>
+        </section>
+
+        <section class="history-section glass-card">
+            <h2>Today's Drinks</h2>
             <div class="history-list" id="history-list">
-                <p class="empty-state">No drinks logged yet today</p>
+                <p class="empty-state">No drinks yet today</p>
             </div>
         </section>
 
-        <section class="week-section">
+        <section class="week-section glass-card">
             <h2>This Week</h2>
             <canvas id="week-chart"></canvas>
         </section>
+    </div>
 
-        <div class="settings-btn" id="settings-btn">⚙️</div>
-
-        <div class="modal" id="settings-modal">
-            <div class="modal-content">
-                <h3>Settings</h3>
-                <label>OpenRouter API Key:
-                    <input type="password" id="api-key" placeholder="sk-or-...">
-                </label>
-                <p class="hint">Get free key at <a href="https://openrouter.ai" target="_blank">openrouter.ai</a></p>
-                <div class="modal-buttons">
-                    <button class="btn-secondary" id="save-settings">Save</button>
-                    <button class="btn-secondary" id="close-modal">Cancel</button>
-                </div>
-            </div>
+    <!-- Ceremony Overlay -->
+    <div class="ceremony-overlay" id="ceremony-overlay">
+        <div class="ceremony-content glass-card">
+            <div class="ceremony-message" id="ceremony-message"></div>
+            <button class="btn-replay" id="btn-replay">Replay</button>
+            <button class="btn-close-ceremony" id="btn-close-ceremony">Continue</button>
         </div>
     </div>
 

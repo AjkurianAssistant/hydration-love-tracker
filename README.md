@@ -1,102 +1,134 @@
 # Hydration Love 💧
 
-A personalized water tracking app with AI image analysis, built with love for an ER nurse studying to be an FNP.
+A beautiful, animated water tracker with heartfelt messages, built with love for an ER nurse studying to be an FNP.
 
 ## Features
 
-- 📸 **AI-Powered Tracking**: Take a photo of your water bottle, AI estimates how much you drank
-- 🎯 **Daily Goal**: 5 bottles (16.9 oz each) - tailored to your stats
-- 💬 **Heartfelt Messages**: Get encouraging messages with every log
-- 🔐 **Progressive Daily Message**: Unlock parts of a special message throughout the day
-- 📊 **Progress Tracking**: Visual progress bar, weekly chart, and history log
-- 🔒 **Anti-Cheating**: Stores last 10 image hashes to prevent duplicates
-- 🎉 **Celebrations**: Confetti when you reach your goal
-- 📱 **Mobile-First**: Optimized for iPhone with touch-friendly interface
-
-## Setup (2 minutes)
-
-### 1. Get a Free API Key
-Go to [OpenRouter.ai](https://openrouter.ai) and sign up for a free account.
-- Free tier: 1,000 requests/day
-- Recommended model: `qwen/qwen-2.5-vl-32b:free` (image understanding)
-
-### 2. Deploy to GitHub Pages
-
-1. Create a new GitHub repository
-2. Push these files to the `main` branch
-3. Go to Settings → Pages
-4. Set source to "Deploy from a branch"
-5. Branch: `main`, folder: `/ (root)`
-6. Save
-7. Your app will be at: `https://yourusername.github.io/repository-name/`
-
-### 3. First Use
-
-1. Open your deployed site on your iPhone (Safari)
-2. Tap the gear icon (⚙️) in the bottom right
-3. Paste your OpenRouter API key
-4. Save
-5. Start logging!
+- 🎯 **Simple button tracking**: 
+  - 💧 **Sip** = 0.5 oz
+  - ✅ **Bottle Done** = 16.9 oz (full bottle)
+- 📊 **5-bottle daily goal** (84.5 oz) with beautiful progress bar
+- 🎨 **Visual water bottle** that fills in real-time as you sip, resets when bottle is finished
+- 💬 **Heartfelt messages**: Two message systems:
+  - Random uplifting message with every drink
+  - Progressive daily love note that unlocks word-by-word (30 segments)
+- 🎉 **Spectacular animations**:
+  - Floating "+X oz" labels on every tap
+  - Confetti bursts at each completed bottle (1, 2, 3, 4, 5)
+  - Full-screen celebration ceremony when daily message completes
+  - Buttons scale, glass cards, shimmer effects, wave progress
+  - Screen shake on 5th bottle!
+- 📱 **Mobile-first design**: Optimized for iPhone with large touch targets
+- 📈 **Weekly chart**: See your bottle consumption over the last 7 days
+- ⏰ **4am Chicago reset**: Automatically resets daily at 4am Chicago time
+- ✨ **Modern glassmorphism**: Frosted glass cards, animated gradient background, smooth transitions
+- 🔒 **No API keys**: Completely offline - everything stored locally
 
 ## How It Works
 
-1. **Take a Photo**: Tap the upload area and snap a picture of your water bottle
-2. **AI Analysis**: The image is sent to OpenRouter's free vision model to estimate fill percentage
-3. **Get Messages**: Receive both a short uplifting message and reveal part of your daily love note
-4. **Track Progress**: Watch the progress bar fill and the chart update over time
+1. **Tap "Sip"** each time you take a drink (0.5 oz)
+2. **Watch the water bottle fill** visually with bubble animations
+3. **When bottle reaches 16.9 oz**, it automatically counts as "Bottle 1 of 5" and resets for the next bottle
+4. **Or tap "Bottle Done"** to instantly complete a bottle (if you finished it all at once)
+5. **Watch the magic**:
+   - Progress bar fills with wave animation
+   - "+X oz" floats up from the button
+   - Random encouraging message appears
+   - Daily love note reveals word-by-word
+   - Confetti explodes when you complete each bottle!
+6. **Complete the daily message** (by reaching all 30 word segments) for a special ceremony with typewriter effect, screen flash, and massive confetti!
 
-**Privacy**: All data is stored locally in your browser. Images are sent to OpenRouter for analysis but are not stored there. You can clear data anytime by clearing browser cache.
+## Visual Water Bottle
+
+The bottle graphic shows your **current bottle progress**:
+- Fills from empty to full as you sip
+- Shows exact oz amount (e.g., "4.5 / 16.9 oz")
+- Automatically resets to 0 when you complete a bottle
+- Displays which bottle you're on: "Bottle 2 of 5"
+
+## Setup (2 minutes)
+
+### 1. Deploy to GitHub Pages
+```bash
+# If you haven't installed GitHub CLI:
+# brew install gh
+
+# Inside the hydration-tracker folder:
+gh repo create hydration-love-tracker --public --source=. --remote=origin --push
+
+# That's it! GitHub Actions will auto-deploy
+```
+
+### 2. Get your live URL
+After push completes (2 min), visit:
+`https://YOURUSERNAME.github.io/hydration-love-tracker/`
+
+### 3. Open on her iPhone
+- Save to Home Screen: Share → Add to Home Screen
+- No signup required, no settings needed!
+
+## Customization
+
+### Change drink amounts (in `js/app.js`):
+```javascript
+const SIP_OZ = 0.5;
+const BOTTLE_OZ = 16.9;
+```
+
+### Change daily goal:
+```javascript
+const GOAL_BOTTLES = 5;
+```
+
+### Add your own messages (in `js/messages.js`):
+- `SHORT_MESSAGES`: Add uplifting phrases
+- `DAILY_MESSAGES`: Add full daily love notes (max 30 recommended)
 
 ## Tech Stack
 
-- Pure HTML/CSS/JavaScript (no build step)
-- Chart.js for weekly visualization
-- GSAP for smooth animations
-- Canvas Confetti for celebrations
-- OpenRouter API (free tier)
-- LocalStorage for client-side persistence
+- **Pure HTML/CSS/JavaScript**: No build step required
+- **GSAP**: Smooth animations and timelines
+- **Chart.js**: Weekly bar chart visualization
+- **Canvas Confetti**: Celebration effects
+- **LocalStorage**: All data stored locally (private)
+- **GitHub Actions**: Auto-deploy on push
 
-## Files
+## Privacy
+
+All data stays on the device. No accounts, no cloud storage, no tracking. You can clear data anytime by clearing browser cache.
+
+## File Structure
 
 ```
 hydration-tracker/
 ├── index.html
-├── css/style.css
+├── css/style.css (glassmorphism, animations, bottle visual)
 ├── js/
-│   ├── app.js (main logic)
-│   ├── storage.js (localStorage wrapper)
-│   ├── ai.js (OpenRouter integration)
-│   └── messages.js (50+ short messages, 30 daily love notes)
+│   ├── app.js (main logic, animations, ceremony, bottle tracking)
+│   ├── storage.js (localStorage with Chicago 4am reset)
+│   └── messages.js (message banks)
+├── .github/workflows/gh-pages.yml (auto-deploy)
+└── README.md
 ```
-
-## Customization (Optional)
-
-To add more messages, edit `js/messages.js`:
-- Add to `SHORT_MESSAGES` array for quick uplifting notes
-- Add to `DAILY_MESSAGES` array for daily progressive messages (max 30 recommended)
 
 ## Troubleshooting
 
-**"API key not set"**: Make sure you saved your key in settings (gear icon)
+**Doesn't work after deployment?**
+- Check GitHub Pages is enabled (workflow should auto-enable)
+- Wait 2-3 minutes after push for deployment
+- Check Actions tab for workflow status
 
-**"API error"**: Check your OpenRouter account has credits. Free tier resets daily.
+**Data not persisting?**
+- Don't use Private/Incognito mode
+- Clear browser cache to reset everything
 
-**Data not persisting**: Make sure you're not in Private/Incognito mode. Safari may block localStorage in certain privacy modes.
-
-**Images not uploading**: Ensure camera permission is granted. Try a different browser if issues persist.
-
-## Future Enhancements (Optional)
-
-- [ ] Push notifications/reminders
-- [ ] Multiple bottle size options
-- [ ] Custom goal based on weight/height
-- [ ] Export data as CSV
-- [ ] Multiple language support
+**Want to reset today's progress?**
+- On iPhone: Settings → Safari → Clear History & Website Data (for this site)
 
 ## Credits
 
-Built with love 💕 for the most dedicated healthcare worker I know.
+Built with love for the most amazing nurse I know. 💕
 
 ---
 
-Made with opencode. Deploy free on GitHub Pages.
+Made with opencode. Free hosting on GitHub Pages.

@@ -1,14 +1,16 @@
 :root {
-    --primary: #4fbdba;
-    --primary-dark: #3a9ea8;
-    --secondary: #ff6b9d;
-    --bg: #f8fafb;
-    --card: #ffffff;
-    --text: #2d3748;
-    --text-muted: #718096;
-    --border: #e2e8f0;
-    --success: #48bb78;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --deep-blue: #0a4d68;
+    --ocean: #0077b6;
+    --turquoise: #00b4d8;
+    --light-turquoise: #90e0ef;
+    --sunset: #ff6b35;
+    --gold: #ffd700;
+    --glass-bg: rgba(255, 255, 255, 0.18);
+    --glass-border: rgba(255, 255, 255, 0.35);
+    --shadow: 0 8px 32px rgba(10, 77, 104, 0.2);
+    --text-light: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 * {
@@ -18,71 +20,150 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
+    font-family: var(--font-main);
+    background: linear-gradient(-45deg, #0a4d68, #0077b6, #023e8a, #0096c7);
+    background-size: 400% 400%;
+    color: var(--text-light);
     min-height: 100vh;
-    padding-bottom: 80px;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(-45deg, #0a4d68, #0077b6, #025e8c, #00b4d8);
+    background-size: 400% 400%;
+    z-index: -1;
+    animation: gradientShift 20s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .container {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Glassmorphism Card */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
 }
 
 header {
     text-align: center;
-    padding: 30px 0;
+    padding: 40px 0 20px;
+    position: relative;
 }
 
 header h1 {
-    font-size: 2rem;
-    color: var(--primary);
-    margin-bottom: 5px;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, var(--light-turquoise), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 20px rgba(144, 224, 239, 0.3);
 }
 
-.subtitle {
-    color: var(--secondary);
-    font-size: 1rem;
+header .subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
-section {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: var(--shadow);
+/* Bottle Status */
+.bottle-status {
+    text-align: center;
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.bottle-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.bottle-emoji {
+    font-size: 3rem;
+    filter: drop-shadow(0 4px 12px rgba(0, 180, 216, 0.4));
+    animation: floatBottle 3s ease-in-out infinite;
+}
+
+@keyframes floatBottle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.bottle-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#bottle-count {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--light-turquoise);
+}
+
+.percentage {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--gold);
+}
+
+#remaining {
+    color: var(--text-muted);
+    font-size: 0.95rem;
 }
 
 /* Progress Section */
 .progress-section {
-    text-align: center;
-}
-
-.progress-header {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-    color: var(--primary-dark);
+    padding: 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
 }
 
 .progress-bar {
-    height: 24px;
-    background: var(--border);
-    border-radius: 12px;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
     overflow: hidden;
-    margin-bottom: 10px;
+    position: relative;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .progress-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    border-radius: 12px;
-    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: linear-gradient(90deg, var(--turquoise), var(--gold));
+    border-radius: 16px;
     position: relative;
+    box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);
+    transition: width 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .progress-fill::after {
@@ -92,167 +173,295 @@ section {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    animation: shimmer 2s infinite;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255,255,255,0.3) 50%, 
+        transparent 100%);
+    animation: shimmerProgress 2s ease-in-out infinite;
 }
 
-@keyframes shimmer {
+@keyframes shimmerProgress {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
 }
 
-.remaining {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-}
-
 /* Message Section */
 .message-section {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-}
-
-.message-card {
-    background: rgba(255,255,255,0.2);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 15px;
-    min-height: 80px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding: 24px;
+}
+
+.short-message {
+    padding: 20px;
     text-align: center;
-    animation: pulse 2s infinite;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--light-turquoise);
+    animation: pulseCard 2.5s ease-in-out infinite;
 }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.02); }
+@keyframes pulseCard {
+    0%, 100% { transform: scale(1); box-shadow: var(--shadow); }
+    50% { transform: scale(1.02); box-shadow: 0 12px 40px rgba(144, 224, 239, 0.4); }
 }
 
-#short-message {
-    font-size: 1.1rem;
+.daily-progress {
+    padding: 20px;
+}
+
+.daily-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
     font-weight: 600;
 }
 
 .daily-message {
-    background: rgba(255,255,255,0.15);
-    border-radius: 12px;
-    padding: 15px;
-    text-align: center;
-    font-style: italic;
     min-height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-#daily-text {
-    font-size: 0.95rem;
-    opacity: 0.9;
-}
-
-/* Upload Section */
-.upload-section {
     text-align: center;
-}
-
-.upload-area {
-    border: 3px dashed var(--border);
-    border-radius: 16px;
-    padding: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 15px;
-    position: relative;
+    font-style: italic;
+    color: white;
+    font-size: 1rem;
+    line-height: 1.6;
     overflow: hidden;
 }
 
-.upload-area:hover, .upload-area.dragover {
-    border-color: var(--primary);
-    background: rgba(79, 189, 186, 0.05);
+/* Actions Section */
+.actions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 16px;
 }
 
-.upload-area.hidden {
-    display: none;
-}
-
-.preview {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: 12px;
-    margin-top: 15px;
-}
-
-.preview.hidden {
-    display: none;
-}
-
-.upload-content {
+/* Bottle Visualization */
+.bottle-visual {
+    padding: 24px;
+    margin-bottom: 16px;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
 }
 
-.bottle-icon {
-    width: 64px;
-    height: 64px;
-    color: var(--primary);
-    margin-bottom: 10px;
+.water-bottle {
+    position: relative;
+    width: 80px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
 }
 
-.hint {
-    color: var(--text-muted);
-    font-size: 0.8rem;
+.bottle-cap {
+    width: 30px;
+    height: 12px;
+    background: linear-gradient(to bottom, #5a5a5a, #3a3a3a);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    z-index: 2;
 }
 
-.btn-primary {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 12px;
+.bottle-neck {
+    width: 26px;
+    height: 25px;
+    background: linear-gradient(to right, rgba(200, 230, 255, 0.6), rgba(255, 255, 255, 0.8), rgba(200, 230, 255, 0.6));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: none;
+    border-radius: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.bottle-body {
+    width: 60px;
+    height: 160px;
+    background: linear-gradient(to right, rgba(200, 230, 255, 0.5), rgba(255, 255, 255, 0.7), rgba(200, 230, 255, 0.5));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px 8px 12px 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0, 180, 216, 0.2);
+}
+
+.water-level {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0%;
+    background: linear-gradient(to top, var(--turquoise), var(--light-turquoise));
+    border-radius: 0 0 12px 12px;
+    transition: height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+}
+
+.water-bubbles {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.bubble {
+    animation: bubbleRise var(--duration, 1.5s) ease-out forwards;
+}
+
+@keyframes bubbleRise {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-100px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+.bottle-base {
+    width: 60px;
+    height: 8px;
+    background: linear-gradient(to bottom, rgba(180, 210, 230, 0.7), rgba(140, 180, 210, 0.5));
+    border-radius: 0 0 12px 12px;
+    position: relative;
+    top: -1px;
+}
+
+.bottle-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+#current-bottle-label {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--light-turquoise);
+}
+
+#current-oz-label {
     font-size: 1rem;
+    color: var(--text-muted);
     font-weight: 600;
-    width: 100%;
+}
+
+.drink-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
 }
 
-.btn-primary:disabled {
-    background: var(--border);
-    cursor: not-allowed;
+.drink-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
 }
 
-.btn-primary:not(:disabled):active {
-    transform: scale(0.98);
+.drink-btn:active::before {
+    opacity: 0.2;
 }
+
+.drink-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 180, 216, 0.4);
+}
+
+.btn-sip::before { background: var(--light-turquoise); }
+.btn-gulp::before { background: var(--sunset); }
+.btn-bottle::before { background: var(--gold); }
+
+.btn-emoji {
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+}
+
+.btn-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+    flex-grow: 1;
+    text-align: left;
+    padding-left: 16px;
+}
+
+.btn-amount {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.btn-sip .btn-amount { background: rgba(144, 224, 239, 0.4); }
+.btn-gulp .btn-amount { background: rgba(255, 107, 53, 0.4); }
+.btn-bottle .btn-amount { background: rgba(255, 215, 0, 0.4); }
 
 /* History Section */
-.history-section h2, .week-section h2 {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    color: var(--text);
+.history-section, .week-section {
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+h2 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: var(--light-turquoise);
+    font-weight: 700;
 }
 
 .history-list {
-    max-height: 300px;
+    max-height: 250px;
     overflow-y: auto;
+    padding-right: 8px;
 }
 
 .history-item {
     display: flex;
     justify-content: space-between;
-    padding: 12px;
-    border-bottom: 1px solid var(--border);
-    animation: slideIn 0.3s ease;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    backdrop-filter: blur(4px);
+    animation: slideInLeft 0.3s ease;
 }
 
-@keyframes slideIn {
+@keyframes slideInLeft {
     from {
         opacity: 0;
-        transform: translateX(-20px);
+        transform: translateX(-30px);
     }
     to {
         opacity: 1;
@@ -260,166 +469,152 @@ section {
     }
 }
 
-.history-item:last-child {
-    border-bottom: none;
-}
-
 .history-time {
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .history-amount {
-    font-weight: 600;
-    color: var(--primary-dark);
+    font-weight: 700;
+    color: var(--light-turquoise);
 }
 
 .empty-state {
     text-align: center;
     color: var(--text-muted);
-    padding: 20px;
+    padding: 30px;
 }
 
-/* Week Chart */
+/* Chart */
 #week-chart {
-    max-height: 200px;
+    max-height: 180px;
     width: 100% !important;
 }
 
-/* Settings Button */
-.settings-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
-    background: var(--secondary);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    z-index: 100;
-}
-
-.settings-btn:hover {
-    transform: scale(1.1);
-}
-
-/* Modal */
-.modal {
+/* Ceremony Overlay */
+.ceremony-overlay {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 1000;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10000;
     align-items: center;
     justify-content: center;
     padding: 20px;
+    opacity: 0;
+    transition: opacity 0.5s;
 }
 
-.modal.active {
-    display: flex;
+.ceremony-overlay.active {
+    opacity: 1;
 }
 
-.modal-content {
-    background: white;
-    border-radius: 16px;
-    padding: 25px;
+.ceremony-content {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid var(--gold);
+    border-radius: 32px;
+    padding: 40px 30px;
+    max-width: 600px;
     width: 100%;
-    max-width: 400px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    animation: modalSlide 0.3s ease;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.4);
+    animation: ceremonyPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes modalSlide {
+@keyframes ceremonyPop {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: scale(0.3);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: scale(1);
     }
 }
 
-.modal-content h3 {
-    margin-bottom: 20px;
-    color: var(--text);
+.ceremony-message {
+    font-size: 1.5rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    color: white;
+    text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
 }
 
-.modal-content label {
-    display: block;
-    margin-bottom: 10px;
-    color: var(--text);
+.typewriter-text {
+    border-right: 2px solid var(--gold);
+    animation: blink 0.7s step-end infinite;
+    white-space: pre-wrap;
 }
 
-.modal-content input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    font-size: 1rem;
-    margin-top: 8px;
+@keyframes blink {
+    50% { border-color: transparent; }
 }
 
-.hint a {
-    color: var(--primary);
-    text-decoration: none;
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.modal-buttons button {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
+.btn-replay, .btn-close-ceremony {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid var(--light-turquoise);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 20px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: opacity 0.2s ease;
+    margin: 0 8px;
+    transition: all 0.3s;
 }
 
-.btn-secondary {
-    background: var(--border);
-    color: var(--text);
+.btn-replay:hover, .btn-close-ceremony:hover {
+    background: var(--light-turquoise);
+    color: var(--deep-blue);
+    transform: scale(1.05);
 }
 
-.btn-secondary:hover {
-    opacity: 0.8;
+/* Floating Label Animation */
+.floating-label {
+    position: fixed;
+    pointer-events: none;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    z-index: 9999;
+    transform: translate(-50%, -50%);
 }
 
 /* Responsive */
 @media (max-width: 480px) {
-    .container {
-        padding: 15px;
-    }
+    .container { padding: 16px; }
+    header h1 { font-size: 2rem; }
+    .bottle-emoji { font-size: 2.5rem; }
+    .drink-btn { padding: 18px 20px; }
+    .btn-text { font-size: 1.2rem; }
+    .ceremony-content { padding: 30px 20px; }
+    .ceremony-message { font-size: 1.25rem; }
+}
 
-    header h1 {
-        font-size: 1.75rem;
-    }
+@media (min-width: 768px) {
+    .drink-btn { flex-direction: row; }
+}
 
-    .progress-header {
-        font-size: 1.25rem;
-    }
-
-    .message-card {
-        min-height: 70px;
-    }
-
-    #short-message {
-        font-size: 1rem;
-    }
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(144, 224, 239, 0.5);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(144, 224, 239, 0.7);
 }
