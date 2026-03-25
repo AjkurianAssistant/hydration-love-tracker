@@ -82,7 +82,7 @@ export const Storage = {
     },
 
     getCurrentBottleProgress() {
-        return parseFloat(localStorage.getItem(STORAGE_KEYS.CURRENT_BOTTLE_PROGRESS) || '0');
+        return parseFloat(localStorage.getItem(STORAGE_KEYS.CURRENT_BOTTLE_PROGRESS) || '16.9');
     },
 
     setCurrentBottleProgress(oz) {
