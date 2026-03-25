@@ -2,7 +2,8 @@
 const STORAGE_KEYS = {
     TODAY_LOGS: 'hydration_today_logs',
     WEEKLY_DATA: 'hydration_weekly_data',
-    DAILY_MESSAGE_INDEX: 'hydration_daily_msg_index',
+    CURRENT_BOTTLE_NUMBER: 'hydration_current_bottle_num',
+    CURRENT_BOTTLE_PROGRESS: 'hydration_current_bottle_progress',
     LAST_RESET_DATE: 'hydration_last_reset_date'
 };
 
@@ -72,25 +73,20 @@ export const Storage = {
         localStorage.setItem(STORAGE_KEYS.WEEKLY_DATA, JSON.stringify(weekly));
     },
 
-    getDailyMessageIndex() {
-        const chicagoToday = getChicagoDateString();
-        const indexKey = `hydration_daily_msg_${chicagoToday}`;
-        const savedIndex = localStorage.getItem(indexKey);
-        return savedIndex ? parseInt(savedIndex, 10) : 0;
+    getCurrentBottleNumber() {
+        return parseInt(localStorage.getItem(STORAGE_KEYS.CURRENT_BOTTLE_NUMBER) || '1', 10);
     },
 
-    incrementDailyMessageIndex() {
-        const chicagoToday = getChicagoDateString();
-        const indexKey = `hydration_daily_msg_${chicagoToday}`;
-        const current = this.getDailyMessageIndex();
-        localStorage.setItem(indexKey, (current + 1).toString());
-        return current + 1;
+    setCurrentBottleNumber(num) {
+        localStorage.setItem(STORAGE_KEYS.CURRENT_BOTTLE_NUMBER, num.toString());
     },
 
-    resetDailyMessageIndex() {
-        const chicagoToday = getChicagoDateString();
-        const indexKey = `hydration_daily_msg_${chicagoToday}`;
-        localStorage.setItem(indexKey, '0');
+    getCurrentBottleProgress() {
+        return parseFloat(localStorage.getItem(STORAGE_KEYS.CURRENT_BOTTLE_PROGRESS) || '0');
+    },
+
+    setCurrentBottleProgress(oz) {
+        localStorage.setItem(STORAGE_KEYS.CURRENT_BOTTLE_PROGRESS, oz.toString());
     },
 
     getLastResetDate() {
@@ -120,7 +116,8 @@ export const Storage = {
 
     resetDailyData() {
         localStorage.setItem(STORAGE_KEYS.TODAY_LOGS, JSON.stringify([]));
-        this.resetDailyMessageIndex();
+        this.setCurrentBottleNumber(1);
+        this.setCurrentBottleProgress(16.9);
     }
 };
 

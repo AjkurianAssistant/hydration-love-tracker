@@ -2,133 +2,107 @@
 
 A beautiful, animated water tracker with heartfelt messages, built with love for an ER nurse studying to be an FNP.
 
+## 🌐 Live Site
+
+**Check it out:** https://ajkurianassistant.github.io/hydration-love-tracker/
+
 ## Features
 
-- 🎯 **Simple button tracking**: 
+- 🎯 **Simple tracking**:
   - 💧 **Sip** = 0.5 oz
   - ✅ **Bottle Done** = 16.9 oz (full bottle)
-- 📊 **5-bottle daily goal** (84.5 oz) with beautiful progress bar
-- 🎨 **Visual water bottle** that fills in real-time as you sip, resets when bottle is finished
-- 💬 **Heartfelt messages**: Two message systems:
-  - Random uplifting message with every drink
-  - Progressive daily love note that unlocks word-by-word (30 segments)
+- 🎨 **Visual water bottle** that starts full and drains with each sip
+  - Shows current oz remaining: "16.9 oz" → "12.5 oz" → etc.
+  - Automatically moves to next bottle when empty
+  - Beautiful bubble animations as you drink
+- 📊 **5-bottle daily goal** (84.5 oz) with animated progress bar
+- 💬 **Encouraging messages**: Random uplifting message with every drink
 - 🎉 **Spectacular animations**:
-  - Floating "+X oz" labels on every tap
+  - "-X oz" floats up from button (water draining!)
+  - Water level drops smoothly with bubble effects
   - Confetti bursts at each completed bottle (1, 2, 3, 4, 5)
-  - Full-screen celebration ceremony when daily message completes
-  - Buttons scale, glass cards, shimmer effects, wave progress
   - Screen shake on 5th bottle!
-- 📱 **Mobile-first design**: Optimized for iPhone with large touch targets
+- 📱 **Mobile-first design**: Optimized for iPhone, large touch targets at top
 - 📈 **Weekly chart**: See your bottle consumption over the last 7 days
 - ⏰ **4am Chicago reset**: Automatically resets daily at 4am Chicago time
-- ✨ **Modern glassmorphism**: Frosted glass cards, animated gradient background, smooth transitions
-- 🔒 **No API keys**: Completely offline - everything stored locally
+- ✨ **Modern glassmorphism**: Frosted glass cards, animated gradient background
+- 🔒 **No setup required**: Everything stored locally, no accounts
 
 ## How It Works
 
-1. **Tap "Sip"** each time you take a drink (0.5 oz)
-2. **Watch the water bottle fill** visually with bubble animations
-3. **When bottle reaches 16.9 oz**, it automatically counts as "Bottle 1 of 5" and resets for the next bottle
-4. **Or tap "Bottle Done"** to instantly complete a bottle (if you finished it all at once)
-5. **Watch the magic**:
-   - Progress bar fills with wave animation
-   - "+X oz" floats up from the button
-   - Random encouraging message appears
-   - Daily love note reveals word-by-word
-   - Confetti explodes when you complete each bottle!
-6. **Complete the daily message** (by reaching all 30 word segments) for a special ceremony with typewriter effect, screen flash, and massive confetti!
+1. **Start with a full bottle** (16.9 oz) visualized on screen
+2. **Tap "💧 Sip"** each time you drink (0.5 oz)
+   - Water level drops
+   - "-0.5 oz" floats up
+   - Encouraging message appears
+3. **When bottle is empty**, it counts as "Bottle 1 of 5" and a fresh full bottle appears
+4. **Tap "✅ Bottle Done"** to skip to next bottle (if you finished it all at once)
+5. **Complete 5 bottles** for the daily goal and celebrate!
 
-## Visual Water Bottle
+## Setup
 
-The bottle graphic shows your **current bottle progress**:
-- Fills from empty to full as you sip
-- Shows exact oz amount (e.g., "4.5 / 16.9 oz")
-- Automatically resets to 0 when you complete a bottle
-- Displays which bottle you're on: "Bottle 2 of 5"
+Already deployed! Just open the live URL on your iPhone and add to Home Screen.
 
-## Setup (2 minutes)
-
-### 1. Deploy to GitHub Pages
-```bash
-# If you haven't installed GitHub CLI:
-# brew install gh
-
-# Inside the hydration-tracker folder:
-gh repo create hydration-love-tracker --public --source=. --remote=origin --push
-
-# That's it! GitHub Actions will auto-deploy
-```
-
-### 2. Get your live URL
-After push completes (2 min), visit:
-`https://YOURUSERNAME.github.io/hydration-love-tracker/`
-
-### 3. Open on her iPhone
-- Save to Home Screen: Share → Add to Home Screen
-- No signup required, no settings needed!
+**URL:** https://ajkurianassistant.github.io/hydration-love-tracker/
 
 ## Customization
 
-### Change drink amounts (in `js/app.js`):
+Want to change drink amounts or goal?
+
+In `js/app.js`:
 ```javascript
-const SIP_OZ = 0.5;
-const BOTTLE_OZ = 16.9;
+const GOAL_BOTTLES = 5;          // Daily goal in bottles
+const BOTTLE_OZ = 16.9;          // Oz per bottle
+const SIP_OZ = 0.5;              // Oz per sip
+
+const DRINK_TYPES = {
+    SIP: { amount: 0.5, confetti: 10, colors: [...] },
+    BOTTLE: { amount: 16.9, confetti: 200, colors: [...] }
+};
 ```
 
-### Change daily goal:
-```javascript
-const GOAL_BOTTLES = 5;
-```
-
-### Add your own messages (in `js/messages.js`):
-- `SHORT_MESSAGES`: Add uplifting phrases
-- `DAILY_MESSAGES`: Add full daily love notes (max 30 recommended)
+Add your own messages in `js/messages.js` → `SHORT_MESSAGES` array.
 
 ## Tech Stack
 
-- **Pure HTML/CSS/JavaScript**: No build step required
-- **GSAP**: Smooth animations and timelines
-- **Chart.js**: Weekly bar chart visualization
-- **Canvas Confetti**: Celebration effects
-- **LocalStorage**: All data stored locally (private)
-- **GitHub Actions**: Auto-deploy on push
+- Pure HTML/CSS/JavaScript (no build step)
+- GSAP for smooth animations
+- Chart.js for weekly visualization
+- Canvas Confetti for celebrations
+- LocalStorage for persistence
+- GitHub Actions for auto-deploy
 
 ## Privacy
 
-All data stays on the device. No accounts, no cloud storage, no tracking. You can clear data anytime by clearing browser cache.
+All data stays on the device. No accounts, no cloud storage. Clear browser cache to reset.
 
 ## File Structure
 
 ```
 hydration-tracker/
 ├── index.html
-├── css/style.css (glassmorphism, animations, bottle visual)
+├── css/style.css (modern glassmorphism, animations)
 ├── js/
-│   ├── app.js (main logic, animations, ceremony, bottle tracking)
-│   ├── storage.js (localStorage with Chicago 4am reset)
-│   └── messages.js (message banks)
+│   ├── app.js (logic, bottle tracking, animations)
+│   ├── storage.js (localStorage with bottle state persistence)
+│   └── messages.js (encouraging messages)
 ├── .github/workflows/gh-pages.yml (auto-deploy)
 └── README.md
 ```
 
 ## Troubleshooting
 
-**Doesn't work after deployment?**
-- Check GitHub Pages is enabled (workflow should auto-enable)
-- Wait 2-3 minutes after push for deployment
-- Check Actions tab for workflow status
+**Site not loading?**
+- Wait 2-3 minutes after deployment
+- Check GitHub Actions for build status
 
 **Data not persisting?**
-- Don't use Private/Incognito mode
-- Clear browser cache to reset everything
+- Use regular mode (not Private browsing)
+- Clear cache to reset
 
 **Want to reset today's progress?**
-- On iPhone: Settings → Safari → Clear History & Website Data (for this site)
-
-## Credits
-
-Built with love for the most amazing nurse I know. 💕
+- Clear browser data for this site
 
 ---
 
-Made with opencode. Free hosting on GitHub Pages.
+Built with love 💕 for the most dedicated healthcare worker.

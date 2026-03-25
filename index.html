@@ -16,15 +16,19 @@
             <p class="subtitle">For my love ❤️</p>
         </header>
 
-        <section class="bottle-status">
-            <div class="bottle-indicator">
-                <span class="bottle-emoji">🥤</span>
-                <div class="bottle-info">
-                    <span id="bottle-count">Bottle 0 of 5</span>
-                    <span id="bottle-percentage" class="percentage">0%</span>
-                </div>
-            </div>
-            <div class="remaining" id="remaining">Remaining: 5 bottles (84.5 oz)</div>
+        <!-- Actions at the top - no scrolling! -->
+        <section class="actions-section">
+            <button class="drink-btn btn-sip glass-card" id="btn-sip">
+                <span class="btn-emoji">💧</span>
+                <span class="btn-text">Sip</span>
+                <span class="btn-amount">+0.5 oz</span>
+            </button>
+
+            <button class="drink-btn btn-bottle glass-card" id="btn-bottle">
+                <span class="btn-emoji">✅</span>
+                <span class="btn-text">Bottle Done</span>
+                <span class="btn-amount">+16.9 oz</span>
+            </button>
         </section>
 
         <section class="progress-section glass-card">
@@ -46,8 +50,8 @@
                 <div class="bottle-base"></div>
             </div>
             <div class="bottle-stats">
-                <span id="current-bottle-label">Bottle 1 of 5</span>
-                <span id="current-oz-label">0.0 / 16.9 oz</span>
+                <span id="bottle-label">Bottle 1 of 5</span>
+                <span id="oz-label">16.9 oz remaining</span>
             </div>
         </section>
 
@@ -55,29 +59,6 @@
             <div class="short-message glass-card" id="message-card">
                 <p id="short-message">Take your first sip! 💕</p>
             </div>
-            <div class="daily-progress glass-card">
-                <div class="daily-header">
-                    <span>Daily Message</span>
-                    <span id="daily-progress-text">0/30 words</span>
-                </div>
-                <div class="daily-message" id="daily-message">
-                    <p id="daily-text">Complete drinks to reveal today's message...</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="actions-section">
-            <button class="drink-btn btn-sip glass-card" id="btn-sip">
-                <span class="btn-emoji">💧</span>
-                <span class="btn-text">Sip</span>
-                <span class="btn-amount">+0.5 oz</span>
-            </button>
-
-            <button class="drink-btn btn-bottle glass-card" id="btn-bottle">
-                <span class="btn-emoji">✅</span>
-                <span class="btn-text">Bottle Done</span>
-                <span class="btn-amount">+16.9 oz</span>
-            </button>
         </section>
 
         <section class="history-section glass-card">
@@ -91,15 +72,6 @@
             <h2>This Week</h2>
             <canvas id="week-chart"></canvas>
         </section>
-    </div>
-
-    <!-- Ceremony Overlay -->
-    <div class="ceremony-overlay" id="ceremony-overlay">
-        <div class="ceremony-content glass-card">
-            <div class="ceremony-message" id="ceremony-message"></div>
-            <button class="btn-replay" id="btn-replay">Replay</button>
-            <button class="btn-close-ceremony" id="btn-close-ceremony">Continue</button>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
