@@ -1,5 +1,5 @@
 // Main application logic
-import { Storage, simpleHash } from './storage.js';
+import { Storage, simpleHash, getChicagoDateStringFromDate, getChicagoWeekday } from './storage.js';
 import { AI } from './ai.js';
 import { getRandomShortMessage, getDailyMessage, getDailyMessageCount } from './messages.js';
 
@@ -19,9 +19,13 @@ class HydrationApp {
         this.bindElements();
         this.bindEvents();
         this.loadSettings();
+        Storage.performDailyResetIfNeeded();
         this.refreshUI();
         this.initChart();
         this.checkDailyReset();
+
+        // Check for reset every minute in case the app is open across midnight
+        setInterval(() => Storage.performDailyResetIfNeeded(), 60 * 1000);
     }
 
     bindElements() {
@@ -277,12 +281,12 @@ class HydrationApp {
         const days = [];
         const data = [];
 
-        // Last 7 days
+        // Last 7 days based on Chicago time
+        const now = Date.now();
         for (let i = 6; i >= 0; i--) {
-            const date = new Date();
-            date.setDate(date.getDate() - i);
-            const dayKey = date.toISOString().slice(0, 10);
-            const dayLabel = date.toLocaleDateString([], { weekday: 'short' });
+            const past = new Date(now - i * 24 * 60 * 60 * 1000);
+            const dayKey = getChicagoDateStringFromDate(past);
+            const dayLabel = getChicagoWeekday(past);
             const ozAmount = weekly[dayKey] || 0;
             const bottles = ozAmount / BOTTLE_OZ;
 
@@ -341,15 +345,8 @@ class HydrationApp {
     }
 
     checkDailyReset() {
-        const lastDate = localStorage.getItem('hydration_last_date');
-        const today = new Date().toDateString();
-
-        if (lastDate !== today) {
-            // New day - can optionally reset daily message index to start fresh
-            // But we want progressive reveal per day, so we track separately using day key in storage
-            localStorage.setItem('hydration_last_date', today);
-        }
-
+        // Ensure daily reset is performed (in case init missed it)
+        Storage.performDailyResetIfNeeded();
         // Load today's message progress
         const currentIndex = Storage.getDailyMessageIndex();
         this.updateMessages(currentIndex);
