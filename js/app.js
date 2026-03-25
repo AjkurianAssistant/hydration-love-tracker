@@ -83,13 +83,12 @@ class HydrationApp {
 
         // Update bottle progress (drain the water)
         this.currentBottleProgress -= ozAmount;
-        let bottleCompleted = false;
-
-        // Check if bottle is empty (<= 0)
+        
+        // Check if bottle is empty or over-consumed
         if (this.currentBottleProgress <= 0) {
+            // Move to next bottle and refill it to full
             this.currentBottleNumber = Math.min(this.currentBottleNumber + 1, GOAL_BOTTLES);
             this.currentBottleProgress = BOTTLE_OZ;
-            bottleCompleted = true;
         }
 
         // Save state
@@ -99,9 +98,9 @@ class HydrationApp {
         this.refreshUI();
         this.updateBottleVisual();
 
-        // Trigger confetti for milestones
+        // Trigger confetti for milestones (based on total bottles consumed)
         const progress = this.calculateProgress();
-        this.triggerMilestoneConfetti(progress, bottleCompleted);
+        this.triggerMilestoneConfetti(progress);
 
         // Show random short message
         const shortMsg = getRandomShortMessage();
@@ -171,13 +170,13 @@ class HydrationApp {
         };
     }
 
-    triggerMilestoneConfetti(progress, bottleJustCompleted = false) {
+    triggerMilestoneConfetti(progress) {
         const milestones = [1, 2, 3, 4, 5];
         
         for (let i = 0; i < milestones.length; i++) {
             const threshold = milestones[i];
             if (progress.totalBottles >= threshold && progress.totalBottles < threshold + 0.1) {
-                const particleCount = bottleJustCompleted ? 200 : 80 + i * 30;
+                const particleCount = 80 + i * 30;
                 
                 confetti({
                     particleCount: particleCount,
