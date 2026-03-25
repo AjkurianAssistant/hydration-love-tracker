@@ -176,10 +176,9 @@ class HydrationApp {
         for (let i = 0; i < milestones.length; i++) {
             const threshold = milestones[i];
             if (progress.totalBottles >= threshold && progress.totalBottles < threshold + 0.1) {
-                const particleCount = 80 + i * 30;
-                
+                // First massive burst
                 confetti({
-                    particleCount: particleCount,
+                    particleCount: 200,
                     spread: 70,
                     origin: { y: 0.6 },
                     colors: ['#4facfe', '#00f2fe', '#ff9a00', '#ffcc00', '#ff6b9d', '#ffd700'],
@@ -187,15 +186,53 @@ class HydrationApp {
                     zIndex: 9999
                 });
 
-                // Screen shake for full bottle
-                if (threshold === 5) {
-                    gsap.to('body', {
-                        x: 5,
-                        duration: 0.05,
-                        yoyo: true,
-                        repeat: 20
+                // Second burst from left side
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 150,
+                        spread: 100,
+                        origin: { y: 0.5, x: 0.2 },
+                        colors: ['#ff6b9d', '#ffd700', '#4facfe'],
+                        disableForReducedMotion: true,
+                        zIndex: 9999
                     });
-                }
+                }, 200);
+
+                // Third burst from right side
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 150,
+                        spread: 100,
+                        origin: { y: 0.5, x: 0.8 },
+                        colors: ['#00f2fe', '#ff9a00', '#ffd700'],
+                        disableForReducedMotion: true,
+                        zIndex: 9999
+                    });
+                }, 400);
+
+                // Screen flash effect
+                const flash = document.createElement('div');
+                flash.style.cssText = `
+                    position: fixed;
+                    top: 0; left: 0; right: 0; bottom: 0;
+                    background: white;
+                    opacity: 0.3;
+                    pointer-events: none;
+                    z-index: 9998;
+                    animation: flashFade 0.6s ease-out forwards;
+                `;
+                document.body.appendChild(flash);
+                setTimeout(() => flash.remove(), 600);
+
+                // Screen shake for all bottle completions (stronger for #5)
+                const shakeRepeats = threshold === 5 ? 30 : 15;
+                gsap.to('body', {
+                    x: 5,
+                    duration: 0.05,
+                    yoyo: true,
+                    repeat: shakeRepeats
+                });
+
                 break;
             }
         }
@@ -223,6 +260,8 @@ class HydrationApp {
     }
 
     updateBottleVisual() {
+        if (!this.elements.waterLevel) return;
+
         // Update bottle label
         const displayBottleNum = this.currentBottleNumber > GOAL_BOTTLES ? GOAL_BOTTLES : this.currentBottleNumber;
         this.elements.bottleLabel.textContent = `Bottle ${displayBottleNum} of ${GOAL_BOTTLES}`;
@@ -231,19 +270,21 @@ class HydrationApp {
         const remainingOz = this.currentBottleProgress.toFixed(1);
         this.elements.ozLabel.textContent = `${remainingOz} oz remaining`;
 
-        // Calculate water level percentage (bottle starts full at 100%, drains to 0%)
-        const levelPercent = (this.currentBottleProgress / BOTTLE_OZ) * 100;
-        const clampedPercent = Math.min(Math.max(levelPercent, 0), 100);
+        // Get bottle body height for pixel calculation
+        const bottleBody = document.querySelector('.bottle-body');
+        const maxHeight = bottleBody ? bottleBody.offsetHeight : 160;
+        const newHeight = (this.currentBottleProgress / BOTTLE_OZ) * maxHeight;
 
-        // Animate water level draining
+        // Animate water level draining (pixel-based for reliability)
         gsap.to(this.elements.waterLevel, {
-            height: `${clampedPercent}%`,
+            height: `${newHeight}px`,
             duration: 0.5,
             ease: "power2.out"
         });
 
-        // Create bubble effect if water is moving
-        if (clampedPercent > 0 && clampedPercent < 100) {
+        // Create bubble effect if water is moving (between 10% and 90%)
+        const levelPercent = (this.currentBottleProgress / BOTTLE_OZ) * 100;
+        if (levelPercent > 10 && levelPercent < 90) {
             this.createBubbleEffect();
         }
     }
